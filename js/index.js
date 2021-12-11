@@ -54,29 +54,15 @@ function addToDOM(obj) {
         const img = document.createElement('img');
         img.src = avaURL;
         img.id = username;
+        img.addEventListener('click', e => {addListener(e)
+        })
+        
         const h2 = document.createElement('h2');
         h2.className = '1';
         h2.id = username;
-        li.addEventListener('click', e => {
-            const targetUsername = e.target.id
-            fetch(`https://api.github.com/users/${targetUsername}/repos`, {
-                method: 'GET',
-                headers: {
-                    Accept: "application/vnd.github.v3+json"
-                }
-            })
-            .then((resp) => resp.json())
-            .then((json) => {
-                const newUL = document.createElement('ul')
-                for (const key in json) {
-                    const url = json[key].html_url             
-                    const newLI = document.createElement('li')
-                    newLI.innerText = url
-                    newUL.appendChild(newLI)}
-                li.append(newUL)
+        h2.addEventListener('click', e => {addListener(e)
+        })
         
-            })}
-        )
         const p2 = document.createElement('p');
         p2.className = '2';
         h2.append(`username: ${username}\n`);
@@ -92,6 +78,33 @@ function addToDOM(obj) {
     }
 }
 
-
-
+function addListener(e){
+    const targetUsername = e.target.id
+    let counter = 0
+    if (counter === 0){
+        let counter = 1
+        fetch(`https://api.github.com/users/${targetUsername}/repos`, {
+        method: 'GET',
+        headers: {
+            Accept: "application/vnd.github.v3+json"
+        }
+    })
+    .then((resp) => resp.json())
+    .then((json) => {
+        const li = document.getElementById(`${targetUsername}`);
+        const newUL = document.createElement('ul')
+        for (const key in json) {
+            const url = json[key].html_url             
+            const newLI = document.createElement('li')
+            newLI.innerText = url
+            newUL.appendChild(newLI)}
+            li.append(newUL)
+    
+    })
+    
+    }  
+    else {
+        //could write something here to make the repos go away when you click the photo
+    }
+}
 })
